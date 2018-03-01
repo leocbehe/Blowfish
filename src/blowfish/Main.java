@@ -23,7 +23,6 @@ import java.util.List;
  */
 public class Main {
 
-    private static String fileText;
     private static HashMap<Integer, String[]> labeledTokens;
 
     /**
@@ -33,16 +32,6 @@ public class Main {
         if (args.length < 1) {
             System.out.println("Please provide the filename as an argument.");
             return;
-        }
-        printLabeledText(args[0]);		  
-    }
-
-    // Debugging method, should be removed
-    private static void printLabeledText(String fileName) {
-        labeledTokens = getTokens(fileName);
-        
-        for(String[] token : labeledTokens.values()){
-            System.out.println(token[0]);
         }
     }
 
