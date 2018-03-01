@@ -34,40 +34,54 @@ public class Main {
             System.out.println("Please provide the filename as an argument.");
             return;
         }
-
-        //printLabeledText(args[0]);		  
+        printLabeledText(args[0]);		  
     }
 
+    // Debugging method, should be removed
     private static void printLabeledText(String fileName) {
         labeledTokens = getTokens(fileName);
+        
         for(String[] token : labeledTokens.values()){
-            //System.out.println(token[0]);
+            System.out.println(token[0]);
         }
     }
 
+    /**
+     * For each token (word or punctuation entity) in the input text file, this
+     * method will return an key-value pair where the key is an integer and the
+     * value is a String array of length two. The integer represents the token's
+     * index, and the String array contains the token text itself and the part
+     * of speech the token has been classified as.
+     * @param fileName
+     * @return 
+     */
     private static HashMap<Integer, String[]> getTokens(String fileName) {
-		HashMap<Integer, String[]> tmp = new HashMap();
+		HashMap<Integer, String[]> result = new HashMap();
 		int tokenIndex = 0;
 		BufferedReader br;
 		try {
+                        // Read in text file and tokenize it.
 			br = new BufferedReader(new FileReader(fileName));
 			LexedTokenFactory factory = new CoreLabelTokenFactory(false);
 			PTBTokenizer tokenizer = new PTBTokenizer(br, factory, null);
 			List<CoreLabel> tokens = tokenizer.tokenize();
+                        // Apply maximum entropy POS tagger to the tokens.
 			MaxentTagger posTagger = new MaxentTagger(
-					"C:\\Users\\Leo\\Coding\\Java\\Libraries\\english-left3words-distsim.tagger");
+					".\\lib\\english-left3words-distsim.tagger");
 			List<TaggedWord> taggedTokens = posTagger.apply(tokens);
+                        // Loop through tokens and insert part-of-speech tags
+                        // for each token.
 			while (tokenIndex < tokens.size()) {
 				CoreLabel token = tokens.get(tokenIndex);
-				tmp.put(tokenIndex, new String[]{token.originalText(), ""});
-				System.out.println(taggedTokens.get(tokenIndex).word()+" <> "+taggedTokens.get(tokenIndex).tag());
+				result.put(tokenIndex, new String[]{token.originalText(), 
+                                    taggedTokens.get(tokenIndex).tag()});
 				tokenIndex++;
 			}
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
 
-		return tmp;
+		return result;
 	}
 
 }
