@@ -25,6 +25,11 @@ public class TokenMap {
     protected HashMap<Integer, String[]> labeledTokens;
     protected int tokenLength;
     
+    public TokenMap(){
+        tokenLength = 0;
+        labeledTokens = null;
+    }
+    
     /**
      * For each token (word or punctuation entity) in the input text file, this
      * method will return an key-value pair where the key is an integer and the
